@@ -89,11 +89,13 @@ ContactDetails.propTypes = {
   }).isRequired,
 };
 
+const HEADER_HEIGHT = '64px';
+
 export default styled(ContactDetails)`
   background: ${props => props.theme['--color-light']};
-  height: calc(100% - 2.5rem);
+  height: calc(100% - ${HEADER_HEIGHT} + 1em);
   position: fixed;
-  top: 2.5rem;
+  top: calc(${HEADER_HEIGHT} + 1em);
   width: 100%;
   //
   ${Header} {

@@ -1,48 +1,39 @@
 import React from 'react';
-import { rgba } from 'polished';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Icon from './Icon';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
-const StatusBar = ({ className }) => (
-  <header className={className}>
-    <Icon>signal_cellular_alt</Icon>
-    movistar
-    <Icon>battery_full</Icon>
-  </header>
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import MoreIcon from '@material-ui/icons/MoreVert';
+
+const RightIcons = styled.div`
+  position: absolute;
+  right: 1em;
+`;
+
+const StatusBar = () => (
+  <AppBar position="sticky">
+    <Toolbar>
+      <IconButton color="inherit" aria-label="Menu">
+        <MenuIcon />
+      </IconButton>
+      <Typography variant="h4" color="inherit">
+        Joinedapp
+      </Typography>
+      <RightIcons>
+        <IconButton color="inherit">
+          <RefreshIcon />
+        </IconButton>
+        <IconButton color="inherit">
+          <MoreIcon />
+        </IconButton>
+      </RightIcons>
+    </Toolbar>
+  </AppBar>
 );
 
-StatusBar.defaultProps = {
-  className: '',
-};
-
-StatusBar.propTypes = {
-  className: PropTypes.string,
-};
-
-export default styled(StatusBar)`
-  background-color: ${props => rgba(props.theme['--color-primary'], 0.9)};
-  color: ${props => props.theme['--color-light']};
-  height: 2.5rem;
-  padding: 0 0.4rem;
-  position: fixed;
-  top: 0;
-  width: 100%;
-
-  & + * {
-    padding-top: 2.5rem;
-  }
-
-  ${Icon} {
-    color: ${props => props.theme['--color-light']};
-    margin-right: 0.4rem;
-    vertical-align: bottom;
-
-    &:last-of-type {
-      position: absolute;
-      right: 0.4rem;
-      transform: rotate(90deg);
-    }
-  }
-`;
+export default StatusBar;
