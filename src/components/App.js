@@ -8,12 +8,15 @@ import Empty from './Empty';
 import Router from './Router';
 import Theme from './Theme';
 
+// Just to avoid RR's annoying PropType error
+const wrapStyledComponent = Component => p => <Component {...p} />;
+
 const App = () => (
   <Router>
     <Theme>
       <AddressBook>
-        <Route path="/:id" component={ContactDetails} />
-        <Route component={Empty} />
+        <Route path="/:id" component={wrapStyledComponent(ContactDetails)} />
+        <Route component={wrapStyledComponent(Empty)} />
       </AddressBook>
     </Theme>
   </Router>

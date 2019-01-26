@@ -1,46 +1,70 @@
 import React, { Component } from 'react';
-import { rgba } from 'polished';
 import PropTypes from 'prop-types';
+
+import { rgba } from 'polished';
 import styled from 'styled-components';
 
-import Icon from '../Icon';
-import Link from '../Link';
+import Paper from '@material-ui/core/Paper';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const Container = styled('section')``;
-const Header = styled('header')``;
+import Contacts from '../../services/contacts';
+
+import ContactCard, { Header } from './ContactCard';
+
+const PaperContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const StyledPaper = styled(Paper)`
+  max-width: 800px;
+  width: 100%;
+`;
 
 class ContactDetails extends Component {
-  static defaultProps = {
-    className: '',
-  };
-
-  static propTypes = {
-    className: PropTypes.string,
-  };
-
   state = {
-    data: { name: '[name]' },
+    data: null,
   };
 
-  componentDidMount() {}
+  async componentDidMount() {
+    const { match } = this.props;
+    this.setState({ data: await Contacts.read(match.params.id) });
+  }
+
+  async componentDidUpdate(prevProps) {
+    const { match } = this.props;
+    const { id } = prevProps.match.params;
+    if (match.params.id !== id) {
+      /* eslint-disable react/no-did-update-set-state */
+      this.setState({ data: await Contacts.read(match.params.id) });
+    }
+  }
 
   render() {
     const { className } = this.props;
     const { data } = this.state;
-
     return (
       <article className={className}>
-        <Header>
-          <Link to="/">
-            <Icon>arrow_back_ios</Icon>
-          </Link>
-          {data.name}
-        </Header>
-        <Container>You need to implement the view here</Container>
+        {data === null ? (
+          <CircularProgress />
+        ) : (
+          <PaperContainer>
+            <StyledPaper>
+              <ContactCard {...data} />
+            </StyledPaper>
+          </PaperContainer>
+        )}
       </article>
     );
   }
 }
+
+ContactDetails.propTypes = {
+  className: PropTypes.string.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({ id: PropTypes.string }).isRequired,
+  }).isRequired,
+};
 
 export default styled(ContactDetails)`
   background: ${props => props.theme['--color-light']};
@@ -56,21 +80,6 @@ export default styled(ContactDetails)`
     height: 5rem;
     justify-content: center;
     text-align: center;
-
-    ${Icon} {
-      height: 5rem;
-      left: 0;
-      line-height: 5rem;
-      position: absolute;
-      top: 0;
-      width: 5rem;
-    }
-  }
-
-  ${Container} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   @media (${props => props.theme['--screen-medium']}) {
