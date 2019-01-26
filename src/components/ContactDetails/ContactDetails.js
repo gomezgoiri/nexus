@@ -24,36 +24,59 @@ const StyledPaper = styled(Paper)`
 class ContactDetails extends Component {
   state = {
     data: null,
+    loading: true,
+    error: false,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     const { match } = this.props;
-    this.setState({ data: await Contacts.read(match.params.id) });
+    this.loadContact(match.params.id);
   }
 
-  async componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
     const { match } = this.props;
     const { id } = prevProps.match.params;
     if (match.params.id !== id) {
-      /* eslint-disable react/no-did-update-set-state */
-      this.setState({ data: await Contacts.read(match.params.id) });
+      this.loadContact(match.params.id);
     }
+  }
+
+  loadContact(contactId) {
+    this.setState({ loading: true, error: false }, async () => {
+      try {
+        this.setState({
+          data: await Contacts.read(contactId),
+          loading: false,
+        });
+      } catch (error) {
+        this.setState({ data: null, loading: false, error: true });
+      }
+    });
   }
 
   render() {
     const { className } = this.props;
-    const { data } = this.state;
+    const { data, loading, error } = this.state;
+
+    let mainContent = <CircularProgress />;
+    if (!loading) {
+      if (data === null) {
+        mainContent = (
+          <React.Fragment>
+            <p>Contact details not loaded</p>
+            {error && <p>{error}</p>}
+          </React.Fragment>
+        );
+      } else {
+        mainContent = <ContactCard {...data} />;
+      }
+    }
+
     return (
       <article className={className}>
-        {data === null ? (
-          <CircularProgress />
-        ) : (
-          <PaperContainer>
-            <StyledPaper>
-              <ContactCard {...data} />
-            </StyledPaper>
-          </PaperContainer>
-        )}
+        <PaperContainer>
+          <StyledPaper>{mainContent}</StyledPaper>
+        </PaperContainer>
       </article>
     );
   }
