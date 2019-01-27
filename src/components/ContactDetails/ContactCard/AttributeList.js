@@ -60,7 +60,7 @@ const AttributeList = ({ phone, cell, email, dob, location, className }) => (
     <Divider variant="inset" component="li" />
     <AttributeItem
       icon={<CalendarIcon />}
-      primary={dob && dob.date}
+      primary={dob && new Date(dob.date).toLocaleString()}
       secondary="Date of birth"
     />
     <Divider variant="inset" component="li" />
