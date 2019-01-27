@@ -18,7 +18,7 @@ const getFilteredContactsByInitialLetter = (contacts, searchText = '') => {
   const filteredContacts = contacts.reduce((ret, item) => {
     // filter
     if (`${item.name.first} ${item.name.last}`.includes(lowerSearch)) {
-      const letter = item.name.first.substring(0, 1);
+      const letter = item.name.first.substring(0, 1).toLowerCase();
       if (!ret[letter]) {
         /* eslint-disable no-param-reassign */
         ret[letter] = [];
