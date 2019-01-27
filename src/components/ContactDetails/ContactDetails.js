@@ -20,6 +20,31 @@ const StyledPaper = styled(Paper)`
   width: 100%;
 `;
 
+const CenteredContainer = styled.div`
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+`;
+
+const HEADER_HEIGHT = '64px';
+const Article = styled.article`
+  background: ${props => props.theme['--color-light']};
+  height: calc(100% - ${HEADER_HEIGHT} + 1em);
+  position: fixed;
+  top: calc(${HEADER_HEIGHT} + 1em);
+  width: 100%;
+
+  ${({ collapsed, theme }) =>
+    collapsed
+      ? ''
+      : `
+        @media (${theme['--screen-medium']}) {
+          left: 32rem; padding-left: 2em;
+          width: calc(100% - 34rem);
+        }`}
+`;
+
 class ContactDetails extends Component {
   state = {
     data: null,
@@ -53,10 +78,14 @@ class ContactDetails extends Component {
   }
 
   render() {
-    const { className } = this.props;
     const { data, loading, error } = this.state;
 
-    let mainContent = <CircularProgress />;
+    let mainContent = (
+      <CenteredContainer>
+        <CircularProgress />
+      </CenteredContainer>
+    );
+
     if (!loading) {
       if (data === null) {
         mainContent = (
@@ -66,40 +95,22 @@ class ContactDetails extends Component {
           </React.Fragment>
         );
       } else {
-        mainContent = <ContactCard {...data} />;
+        mainContent = (
+          <PaperContainer>
+            <StyledPaper>
+              <ContactCard {...data} />
+            </StyledPaper>
+          </PaperContainer>
+        );
       }
     }
 
-    return (
-      <article className={className}>
-        <PaperContainer>
-          <StyledPaper>{mainContent}</StyledPaper>
-        </PaperContainer>
-      </article>
-    );
+    return <Article>{mainContent}</Article>;
   }
 }
 
 ContactDetails.propTypes = {
-  className: PropTypes.string.isRequired,
   contactId: PropTypes.string.isRequired,
 };
 
-const HEADER_HEIGHT = '64px';
-
-export default styled(ContactDetails)`
-  background: ${props => props.theme['--color-light']};
-  height: calc(100% - ${HEADER_HEIGHT} + 1em);
-  position: fixed;
-  top: calc(${HEADER_HEIGHT} + 1em);
-  width: 100%;
-
-  ${({ collapsed, theme }) =>
-    collapsed
-      ? ''
-      : `
-        @media (${theme['--screen-medium']}) {
-          left: 32rem; padding-left: 2em;
-          width: calc(100% - 34rem);
-        }`}
-`;
+export default ContactDetails;
