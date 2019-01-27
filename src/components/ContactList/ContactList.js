@@ -23,13 +23,13 @@ const ContactList = ({ className, items, selectedContact, push }) => (
 );
 
 ContactList.defaultProps = {
-  className: '',
+  selectedContact: '',
   items: [],
 };
 
 ContactList.propTypes = {
-  className: PropTypes.string,
-  selectedContact: PropTypes.string.isRequired,
+  selectedContact: PropTypes.string,
+  className: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape(ContactProp)),
   push: PropTypes.func.isRequired,
 };
