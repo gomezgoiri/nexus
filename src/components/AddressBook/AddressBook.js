@@ -13,6 +13,23 @@ const Main = styled.main`
   ${({ zIndex = 1 }) => `z-index: ${zIndex};`};
 `;
 
+const getFilteredContactsByInitialLetter = (contacts, searchText = '') => {
+  const lowerSearch = searchText.toLowerCase();
+  const filteredContacts = contacts.reduce((ret, item) => {
+    // filter
+    if (`${item.name.first} ${item.name.last}`.includes(lowerSearch)) {
+      const letter = item.name.first.substring(0, 1);
+      if (!ret[letter]) {
+        /* eslint-disable no-param-reassign */
+        ret[letter] = [];
+      }
+      ret[letter].push(item);
+    }
+    return ret;
+  }, {});
+  return filteredContacts;
+};
+
 class AddressBook extends Layout {
   static propTypes = {
     ...Layout.propTypes,
@@ -25,18 +42,30 @@ class AddressBook extends Layout {
 
   async componentDidMount() {
     const contacts = await Contacts.read();
-    this.setState({ contacts, filteredContacts: contacts });
+    const sortedContacts = contacts.sort((aContact, bContact) => {
+      const a = `${aContact.name.first} ${aContact.name.last}`;
+      const b = `${bContact.name.first} ${bContact.name.last}`;
+
+      if (a < b) {
+        return -1;
+      }
+      return a > b ? 1 : 0;
+    });
+
+    this.setState({
+      contacts: sortedContacts,
+      filteredContacts: getFilteredContactsByInitialLetter(sortedContacts),
+    });
   }
 
   filterContacts = searchText => {
     if (this.state.contacts && this.state.contacts.length > 0) {
-      this.setState(prevState => {
-        const lowerSearch = searchText.toLowerCase();
-        const filteredContacts = prevState.contacts.filter(({ name }) =>
-          `${name.first} ${name.last}`.includes(lowerSearch),
-        );
-        return { filteredContacts };
-      });
+      this.setState(prevState => ({
+        filteredContacts: getFilteredContactsByInitialLetter(
+          prevState.contacts,
+          searchText,
+        ),
+      }));
     }
   };
 

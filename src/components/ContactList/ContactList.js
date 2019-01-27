@@ -4,19 +4,32 @@ import styled from 'styled-components';
 
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
+
 import Contact from './Contact';
 import { ContactProp } from '../ContactProps';
 
+const Letter = styled.p`
+  text-transform: uppercase;
+  margin-left: 1em;
+`;
+
 const ContactList = ({ className, items, selectedContact, push }) => (
   <List className={className}>
-    {items.map((contact, i) => (
-      <React.Fragment key={contact.id}>
-        {i > 0 && <Divider component="li" />}
-        <Contact
-          {...contact}
-          selected={contact.id === selectedContact}
-          onClick={() => push(`/${contact.id}`)}
-        />
+    {Object.keys(items).map(letter => (
+      <React.Fragment key={`letter-${letter}`}>
+        <Divider component="li" variant="inset" />
+        <li>
+          <Letter>{letter}</Letter>
+        </li>
+
+        {items[letter].map(contact => (
+          <Contact
+            key={contact.id}
+            {...contact}
+            selected={contact.id === selectedContact}
+            onClick={() => push(`/${contact.id}`)}
+          />
+        ))}
       </React.Fragment>
     ))}
   </List>
@@ -24,13 +37,13 @@ const ContactList = ({ className, items, selectedContact, push }) => (
 
 ContactList.defaultProps = {
   selectedContact: '',
-  items: [],
+  items: {},
 };
 
 ContactList.propTypes = {
   selectedContact: PropTypes.string,
   className: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.shape(ContactProp)),
+  items: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.shape(ContactProp))),
   push: PropTypes.func.isRequired,
 };
 
