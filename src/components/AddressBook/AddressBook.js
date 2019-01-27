@@ -19,12 +19,25 @@ class AddressBook extends Layout {
   state = { contacts: [] };
 
   async componentDidMount() {
-    this.setState({ contacts: await Contacts.read() });
+    const contacts = await Contacts.read();
+    this.setState({ contacts, filteredContacts: contacts });
   }
+
+  filterContacts = searchText => {
+    if (this.state.contacts && this.state.contacts.length > 0) {
+      this.setState(prevState => {
+        const lowerSearch = searchText.toLowerCase();
+        const filteredContacts = prevState.contacts.filter(({ name }) =>
+          `${name.first} ${name.last}`.includes(lowerSearch),
+        );
+        return { filteredContacts };
+      });
+    }
+  };
 
   render() {
     const { collapsed, onToggleCollapse } = this.props;
-    const { contacts } = this.state;
+    const { filteredContacts } = this.state;
 
     const element = super.render();
 
@@ -34,9 +47,13 @@ class AddressBook extends Layout {
 
     return (
       <div>
-        <StatusBar onToggleCollapse={onToggleCollapse} collapsed={collapsed} />
+        <StatusBar
+          onToggleCollapse={onToggleCollapse}
+          collapsed={collapsed}
+          onSearch={this.filterContacts}
+        />
         <Drawer open={!collapsed} top="64px">
-          <ContactList items={contacts} />
+          <ContactList items={filteredContacts} />
         </Drawer>
         <main>{element}</main>
       </div>

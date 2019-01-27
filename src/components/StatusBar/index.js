@@ -20,7 +20,7 @@ const RightIcons = styled.div`
   display: flex;
 `;
 
-const StatusBar = ({ className, collapsed, onToggleCollapse }) => (
+const StatusBar = ({ className, collapsed, onToggleCollapse, onSearch }) => (
   <AppBar position="sticky" className={className}>
     <Toolbar>
       <IconButton color="inherit" aria-label="Menu" onClick={onToggleCollapse}>
@@ -30,7 +30,7 @@ const StatusBar = ({ className, collapsed, onToggleCollapse }) => (
         Joinedapp
       </Typography>
       <RightIcons>
-        <SearchField />
+        <SearchField onChange={onSearch} />
         <IconButton color="inherit">
           <RefreshIcon />
         </IconButton>
@@ -46,6 +46,7 @@ StatusBar.propTypes = {
   collapsed: PropTypes.bool.isRequired,
   className: PropTypes.string.isRequired,
   onToggleCollapse: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired,
 };
 
 export default styled(StatusBar)`

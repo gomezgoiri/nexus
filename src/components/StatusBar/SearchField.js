@@ -15,7 +15,7 @@ const IconContainer = styled.div`
   justify-content: center;
 `;
 
-const SearchField = ({ className }) => (
+const SearchField = ({ className, onChange }) => (
   <div className={className}>
     <IconContainer>
       <SearchIcon />
@@ -26,12 +26,14 @@ const SearchField = ({ className }) => (
         root: 'root',
         input: 'input',
       }}
+      onChange={event => onChange(event.target.value)}
     />
   </div>
 );
 
 SearchField.propTypes = {
   className: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default styled(SearchField)`
