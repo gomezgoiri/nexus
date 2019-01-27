@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 import Drawer from '../Drawer';
 import ContactList from '../ContactList';
@@ -7,6 +8,10 @@ import Layout from '../Layout';
 import StatusBar from '../StatusBar';
 
 import Contacts from '../../services/contacts';
+
+const Main = styled.main`
+  ${({ zIndex = 1 }) => `z-index: ${zIndex};`};
+`;
 
 class AddressBook extends Layout {
   static propTypes = {
@@ -52,10 +57,10 @@ class AddressBook extends Layout {
           collapsed={collapsed}
           onSearch={this.filterContacts}
         />
-        <Drawer open={!collapsed} top="64px">
+        <Drawer open={!collapsed} top="64px" zIndex={10}>
           <ContactList items={filteredContacts} />
         </Drawer>
-        <main>{element}</main>
+        <Main zIndex={9}>{element}</Main>
       </div>
     );
   }
