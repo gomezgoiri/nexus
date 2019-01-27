@@ -1,5 +1,17 @@
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+
+import { utils as router } from '../../ducks/router';
 import ContactList from './ContactList';
 
-export { default as Contact } from './Contact';
+const mapStateToProps = state => ({
+  selectedContact: router.getPathParams(state, '/:id').id,
+});
 
-export default ContactList;
+const mapDispatchToProps = dispatch => bindActionCreators({ push }, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ContactList);

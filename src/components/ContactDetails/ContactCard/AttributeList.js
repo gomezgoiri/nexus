@@ -13,7 +13,7 @@ import CalendarIcon from '@material-ui/icons/CalendarToday';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import Divider from '@material-ui/core/Divider';
 
-import { ContactProp } from './ContactProp';
+import { ContactProp } from '../../ContactProps';
 
 const NoAvatar = styled.div`
   width: 40px;

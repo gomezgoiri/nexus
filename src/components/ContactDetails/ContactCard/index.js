@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ContactProp } from './ContactProp';
+import { ContactProp } from '../../ContactProps';
 import Header from './Header';
 import AttributeList from './AttributeList';
 
@@ -22,5 +22,4 @@ const ContactCard = details => (
 
 ContactCard.propTypes = ContactProp;
 
-export { default as Header } from './Header';
 export default ContactCard;

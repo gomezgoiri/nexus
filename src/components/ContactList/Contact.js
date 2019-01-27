@@ -1,79 +1,37 @@
 import React from 'react';
-import { rgba } from 'polished';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Avatar from '../Avatar';
-import Link from '../Link';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
 
-const Container = styled('div')``;
-const Name = styled('span')``;
-const Phone = styled('span')``;
+import { ContactProp } from '../ContactProps';
 
-const Contact = ({
-  className,
-  id,
-  name: { first, last },
-  phone,
-  picture: { thumbnail },
-}) => (
-  <Link to={id}>
-    <article className={className}>
-      <Avatar image={thumbnail} name={`${first} ${last}`} />
-      <Container>
-        <Name>{`${first} ${last}`}</Name>
-        <Phone>{phone}</Phone>
-      </Container>
-    </article>
-  </Link>
+const StyledListItem = styled(({ className, ...other }) => (
+  <ListItemText primaryTypographyProps={{ className }} {...other} />
+))`
+  font-size: 14px !important;
+  font-weight: bold !important;
+  text-transform: capitalize;
+  ${({ selected = false, theme }) =>
+    selected ? `color: ${theme['--color-primary']} !important;` : ``}
+`;
+
+const Contact = ({ picture, name, selected, onClick }) => (
+  <ListItem button onClick={onClick}>
+    <Avatar src={picture.thumbnail} />
+    <StyledListItem
+      selected={selected}
+      primary={`${name.first} ${name.last}`}
+    />
+  </ListItem>
 );
 
-Contact.defaultProps = {
-  className: '',
-  phone: '',
-  picture: {},
-};
-
 Contact.propTypes = {
-  className: PropTypes.string,
-  id: PropTypes.string.isRequired,
-  name: PropTypes.shape({
-    first: PropTypes.string,
-    last: PropTypes.string,
-    title: PropTypes.string,
-  }).isRequired,
-  phone: PropTypes.string,
-  picture: PropTypes.shape({
-    thumbnail: PropTypes.string,
-  }),
+  selected: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
+  ...ContactProp,
 };
 
-export default styled(Contact)`
-  border-bottom: 0.1rem solid ${props => rgba(props.theme['--color-dark'], 0.1)};
-  display: flex;
-  margin: 0 1.2rem 0 2.4rem;
-  padding: 0.8rem 0;
-
-  ${Avatar} {
-    height: 6rem;
-    width: 6rem;
-  }
-
-  ${Container} {
-    margin-left: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  ${Name} {
-    ${props => props.theme['--font-large']};
-    font-weight: ${props => props.theme['--font-weight-demi']};
-  }
-
-  ${Phone} {
-    ${props => props.theme['--font-small']};
-    color: ${props => props.theme['--font-opacity-40']};
-    font-weight: ${props => props.theme['--font-weight-demi']};
-  }
-`;
+export default Contact;

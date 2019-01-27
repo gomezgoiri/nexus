@@ -9,7 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import Link from '../../Link';
 
-import { NameProp, PictureProp } from './ContactProp';
+import { NameProp, PictureProp } from '../../ContactProps';
 
 const FullName = styled(
   ({ showTitle = false, title, first, last, className }) => (
@@ -79,6 +79,12 @@ export default styled(Header)`
   background: ${({ picture = {} }) =>
     `url('${picture.large}') no-repeat center center;`};
   background-size: 100%;
+
+  ${props => props.theme['--font-extra-large']};
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 
   .div {
     height: 100%;

@@ -20,7 +20,7 @@ const LocationProp = PropTypes.shape({
   street: PropTypes.string,
   city: PropTypes.string,
   state: PropTypes.string,
-  postcode: PropTypes.number,
+  postcode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   coordinates: CoordinatesProp,
   timezone: TimezoneProp,
 });

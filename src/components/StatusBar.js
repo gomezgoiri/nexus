@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -15,10 +16,10 @@ const RightIcons = styled.div`
   right: 1em;
 `;
 
-const StatusBar = () => (
-  <AppBar position="sticky">
+const StatusBar = ({ className, onToggleCollapse }) => (
+  <AppBar position="sticky" className={className}>
     <Toolbar>
-      <IconButton color="inherit" aria-label="Menu">
+      <IconButton color="inherit" aria-label="Menu" onClick={onToggleCollapse}>
         <MenuIcon />
       </IconButton>
       <Typography variant="h4" color="inherit">
@@ -36,4 +37,11 @@ const StatusBar = () => (
   </AppBar>
 );
 
-export default StatusBar;
+StatusBar.propTypes = {
+  className: PropTypes.string.isRequired,
+  onToggleCollapse: PropTypes.func.isRequired,
+};
+
+export default styled(StatusBar)`
+  background-color: ${({ theme }) => theme['--color-primary']} !important;
+`;
