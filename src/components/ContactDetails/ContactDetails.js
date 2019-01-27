@@ -29,7 +29,7 @@ const CenteredContainer = styled.div`
 
 const HEADER_HEIGHT = '64px';
 const Article = styled.article`
-  background: ${props => props.theme['--color-light']};
+  background: ${({ theme }) => theme['--color-light']};
   height: calc(100% - ${HEADER_HEIGHT} + 1em);
   position: fixed;
   top: calc(${HEADER_HEIGHT} + 1em);
@@ -78,6 +78,7 @@ class ContactDetails extends Component {
   }
 
   render() {
+    const { collapsed } = this.props;
     const { data, loading, error } = this.state;
 
     let mainContent = (
@@ -105,12 +106,13 @@ class ContactDetails extends Component {
       }
     }
 
-    return <Article>{mainContent}</Article>;
+    return <Article collapsed={collapsed}>{mainContent}</Article>;
   }
 }
 
 ContactDetails.propTypes = {
   contactId: PropTypes.string.isRequired,
+  collapsed: PropTypes.bool.isRequired,
 };
 
 export default ContactDetails;
