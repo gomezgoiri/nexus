@@ -34,7 +34,7 @@ class AddressBook extends Layout {
 
     return (
       <div>
-        <StatusBar onToggleCollapse={onToggleCollapse} />
+        <StatusBar onToggleCollapse={onToggleCollapse} collapsed={collapsed} />
         <Drawer open={!collapsed} top="64px">
           <ContactList items={contacts} />
         </Drawer>

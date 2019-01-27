@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import LeftIcon from '@material-ui/icons/ChevronLeft';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
@@ -16,11 +17,11 @@ const RightIcons = styled.div`
   right: 1em;
 `;
 
-const StatusBar = ({ className, onToggleCollapse }) => (
+const StatusBar = ({ className, collapsed, onToggleCollapse }) => (
   <AppBar position="sticky" className={className}>
     <Toolbar>
       <IconButton color="inherit" aria-label="Menu" onClick={onToggleCollapse}>
-        <MenuIcon />
+        {collapsed ? <MenuIcon /> : <LeftIcon />}
       </IconButton>
       <Typography variant="h4" color="inherit">
         Joinedapp
@@ -38,6 +39,7 @@ const StatusBar = ({ className, onToggleCollapse }) => (
 );
 
 StatusBar.propTypes = {
+  collapsed: PropTypes.bool.isRequired,
   className: PropTypes.string.isRequired,
   onToggleCollapse: PropTypes.func.isRequired,
 };
