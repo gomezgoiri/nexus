@@ -7,28 +7,12 @@ import ContactList from '../ContactList';
 import Layout from '../Layout';
 import StatusBar from '../StatusBar';
 
+import { getFilteredContactsByInitialLetter } from './utils';
 import Contacts from '../../services/contacts';
 
 const Main = styled.main`
   ${({ zIndex = 1 }) => `z-index: ${zIndex};`};
 `;
-
-const getFilteredContactsByInitialLetter = (contacts, searchText = '') => {
-  const lowerSearch = searchText.toLowerCase();
-  const filteredContacts = contacts.reduce((ret, item) => {
-    // filter
-    if (`${item.name.first} ${item.name.last}`.includes(lowerSearch)) {
-      const letter = item.name.first.substring(0, 1).toLowerCase();
-      if (!ret[letter]) {
-        /* eslint-disable no-param-reassign */
-        ret[letter] = [];
-      }
-      ret[letter].push(item);
-    }
-    return ret;
-  }, {});
-  return filteredContacts;
-};
 
 class AddressBook extends Layout {
   static propTypes = {
