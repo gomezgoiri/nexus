@@ -12,9 +12,12 @@ import LeftIcon from '@material-ui/icons/ChevronLeft';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
+import SearchField from './SearchField';
+
 const RightIcons = styled.div`
   position: absolute;
   right: 1em;
+  display: flex;
 `;
 
 const StatusBar = ({ className, collapsed, onToggleCollapse }) => (
@@ -27,6 +30,7 @@ const StatusBar = ({ className, collapsed, onToggleCollapse }) => (
         Joinedapp
       </Typography>
       <RightIcons>
+        <SearchField />
         <IconButton color="inherit">
           <RefreshIcon />
         </IconButton>
